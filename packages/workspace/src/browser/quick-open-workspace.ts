@@ -63,12 +63,8 @@ export class QuickOpenWorkspace {
             try {
                 stat = await this.fileService.resolve(uri);
             } catch { }
-            if (!stat ||
-                !this.preferences['workspace.supportMultiRootWorkspace'] && !stat.isDirectory) {
-                continue; // skip the workspace files if multi root is not supported
-            }
-            if (uri.toString() === tempWorkspaceFile.toString()) {
-                continue; // skip the temporary workspace files
+            if (uri.toString() === tempWorkspaceFile.toString() || !stat) {
+                continue; // skip the temporary workspace files or an undefined stat.
             }
             const icon = this.labelProvider.getIcon(stat);
             const iconClasses = icon === '' ? undefined : [icon + ' file-icon'];
